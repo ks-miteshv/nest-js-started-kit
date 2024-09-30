@@ -1,6 +1,6 @@
 import {
   Injectable,
-  NotFoundException,
+  UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -38,12 +38,12 @@ export class AuthService {
 
   async login(loginUserDto: any): Promise<{ accessToken: string }> {
     const checkUser = await this.checkUser(loginUserDto.email);
-    if (!checkUser) {
-      throw new NotFoundException('User not exists please register now.');
-    }
 
-    if (!(await bcrypt.compare(loginUserDto.password, checkUser.password))) {
-      throw new UnprocessableEntityException('invalid password.');
+    if (
+      !checkUser ||
+      !(await bcrypt.compare(loginUserDto.password, checkUser.password))
+    ) {
+      throw new UnauthorizedException('Invalid email or password.');
     }
 
     if (!checkUser.isActive) {

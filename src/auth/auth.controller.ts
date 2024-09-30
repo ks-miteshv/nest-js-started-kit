@@ -8,13 +8,16 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() registerDto: RegisterDto, @Res() res) {
+  async register(@Body() registerDto: RegisterDto, @Res() res): Promise<any> {
     await this.authService.register(registerDto);
     return res.status(201).send({ message: 'User register successfully.' });
   }
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto, @Res() res) {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res() res,
+  ): Promise<{ accessToken: string }> {
     const response = await this.authService.login(loginDto);
     return res.status(200).send(response);
   }

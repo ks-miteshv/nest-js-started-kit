@@ -6,6 +6,7 @@ import { User, UserSchema } from 'src/users/schemas/user.schema';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from './jwt/jwt.strategy';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     //import and bind below given dependency so the we can use it into the service and controller.
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
+  exports: [JwtModule, PassportModule],
   controllers: [AuthController],
 })
 export class AuthModule {}
