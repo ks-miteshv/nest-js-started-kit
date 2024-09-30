@@ -5,6 +5,7 @@ import * as Joi from 'joi';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,12 +19,14 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRES: Joi.string().optional().default('1h'),
         HOST: Joi.string().optional(),
         PORT: Joi.number().optional(),
         MONGO_CONNECTION_STRING: Joi.string().required(),
       }),
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
