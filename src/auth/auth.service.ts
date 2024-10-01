@@ -53,7 +53,7 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign({
         username: checkUser.email,
-        id: checkUser['_id'],
+        id: checkUser._id,
       }),
     };
   }

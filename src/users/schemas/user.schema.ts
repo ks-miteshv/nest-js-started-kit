@@ -11,7 +11,7 @@ import { Document } from 'mongoose';
 export type UserDocument = User & Document;
 
 @Schema({ timestamps: true }) // Decorator that marks the class as a Mongoose schema and enables timestamps
-export class User {
+export class User extends Document {
   @Prop({ required: true, maxlength: 150 }) // 'required' ensures that this field must be present
   name: string;
 
@@ -27,7 +27,7 @@ export class User {
    * - Required field
    * - We will handle hashing in the service logic (not directly in schema)
    */
-  @Prop({ required: true, maxlength: 255 }) 
+  @Prop({ required: true, maxlength: 255 })
   password: string;
 
   /**
@@ -44,6 +44,10 @@ export class User {
    */
   @Prop({ type: Date, default: null })
   emailVerifiedAt: Date | null;
+
+  // Add timestamps explicitly for TypeScript type safety
+  createdAt: Date; // Mongoose will automatically populate this field
+  updatedAt: Date; // Mongoose will automatically populate this field
 }
 
 // Create the schema factory
